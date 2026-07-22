@@ -2,7 +2,7 @@ package com.flowpay.routing.adapter.in.web.webhook;
 
 import com.flowpay.routing.adapter.in.web.webhook.dto.MetaWebhookPayload;
 import com.flowpay.routing.application.port.in.RouteChatUseCase;
-import com.flowpay.routing.application.port.in.command.RouteChatCommand;
+import com.flowpay.routing.application.dto.command.RouteChatCommand;
 import com.flowpay.routing.domain.model.TeamType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

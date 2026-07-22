@@ -67,17 +67,12 @@ public class RoutingEngineService implements RouteChatUseCase {
     @Override
     public void dispatchPendingChats(String teamId) {
         String lockKey = "flowpay:lock:routing:team:" + teamId;
-        try {
-            if (distributedLock.tryAcquire(lockKey, 2000, 10000)) {
-                try {
-                    executeDistributionLoop(UUID.fromString(teamId));
-                } finally {
-                    distributedLock.release(lockKey);
-                }
+        if (distributedLock.tryAcquire(lockKey, 2000, 10000)) {
+            try {
+                executeDistributionLoop(UUID.fromString(teamId));
+            } finally {
+                distributedLock.release(lockKey);
             }
-        } catch (InterruptedException e) {
-            Thread.currentThread().interrupt();
-            throw new RuntimeException("Interrupted while trying to acquire lock for team " + teamId, e);
         }
     }
 

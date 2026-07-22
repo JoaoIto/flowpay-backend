@@ -4,6 +4,7 @@ import com.flowpay.routing.adapter.out.persistence.mapper.PersistenceMapper;
 import com.flowpay.routing.adapter.out.persistence.repository.SpringChatSessionRepository;
 import com.flowpay.routing.application.port.out.ChatSessionRepositoryPort;
 import com.flowpay.routing.domain.model.ChatSession;
+import com.flowpay.routing.domain.model.ChatStatus;
 import org.springframework.stereotype.Component;
 
 import java.util.List;
@@ -32,28 +33,28 @@ public class ChatSessionPersistenceAdapter implements ChatSessionRepositoryPort 
     }
 
     @Override
-    public List<ChatSession> findByTeamIdAndStatus(UUID teamId, String status) {
-        return repository.findByTeamIdAndStatus(teamId, status).stream().map(mapper::toDomain).collect(Collectors.toList());
+    public List<ChatSession> findByTeamIdAndStatus(UUID teamId, ChatStatus status) {
+        return repository.findByTeamIdAndStatus(teamId, status.name()).stream().map(mapper::toDomain).collect(Collectors.toList());
     }
 
     @Override
-    public List<ChatSession> findByAgentIdAndStatus(UUID agentId, String status) {
-        return repository.findByAgentIdAndStatus(agentId, status).stream().map(mapper::toDomain).collect(Collectors.toList());
+    public List<ChatSession> findByAgentIdAndStatus(UUID agentId, ChatStatus status) {
+        return repository.findByAgentIdAndStatus(agentId, status.name()).stream().map(mapper::toDomain).collect(Collectors.toList());
     }
 
     @Override
-    public List<ChatSession> findByStatus(String status) {
-        return repository.findByStatus(status).stream().map(mapper::toDomain).collect(Collectors.toList());
+    public List<ChatSession> findByStatus(ChatStatus status) {
+        return repository.findByStatus(status.name()).stream().map(mapper::toDomain).collect(Collectors.toList());
     }
 
     @Override
-    public long countByStatus(String status) {
-        return repository.countByStatus(status);
+    public long countByStatus(ChatStatus status) {
+        return repository.countByStatus(status.name());
     }
 
     @Override
-    public long countByTeamIdAndStatus(UUID teamId, String status) {
-        return repository.countByTeamIdAndStatus(teamId, status);
+    public long countByTeamIdAndStatus(UUID teamId, ChatStatus status) {
+        return repository.countByTeamIdAndStatus(teamId, status.name());
     }
 
     @Override

@@ -12,6 +12,7 @@ import com.flowpay.routing.domain.model.QueueEntry;
 import com.flowpay.routing.domain.model.Team;
 import com.flowpay.routing.domain.model.TeamType;
 import org.springframework.stereotype.Component;
+import java.time.ZoneOffset;
 
 @Component
 public class PersistenceMapper {
@@ -22,7 +23,7 @@ public class PersistenceMapper {
             entity.getId(),
             entity.getName(),
             TeamType.fromString(entity.getType()).orElseThrow(),
-            entity.getCreatedAt()
+            entity.getCreatedAt() != null ? entity.getCreatedAt().toInstant() : null
         );
     }
 
@@ -32,7 +33,7 @@ public class PersistenceMapper {
         entity.setId(domain.getId());
         entity.setName(domain.getName());
         entity.setType(domain.getType().name());
-        entity.setCreatedAt(domain.getCreatedAt());
+        entity.setCreatedAt(domain.getCreatedAt() != null ? domain.getCreatedAt().atOffset(ZoneOffset.UTC) : null);
         return entity;
     }
 
@@ -45,7 +46,7 @@ public class PersistenceMapper {
             entity.getMaxChats(),
             entity.getActiveChatsCount(),
             AgentStatus.valueOf(entity.getStatus()),
-            entity.getCreatedAt()
+            entity.getCreatedAt() != null ? entity.getCreatedAt().toInstant() : null
         );
     }
 
@@ -58,7 +59,7 @@ public class PersistenceMapper {
         entity.setMaxChats(domain.getMaxChats());
         entity.setActiveChatsCount(domain.getActiveChatsCount());
         entity.setStatus(domain.getStatus().name());
-        entity.setCreatedAt(domain.getCreatedAt());
+        entity.setCreatedAt(domain.getCreatedAt() != null ? domain.getCreatedAt().atOffset(ZoneOffset.UTC) : null);
         return entity;
     }
 
@@ -72,11 +73,11 @@ public class PersistenceMapper {
             entity.getChannel(),
             entity.getSubject(),
             ChatStatus.valueOf(entity.getStatus()),
-            entity.getCreatedAt(),
-            entity.getQueuedAt(),
-            entity.getStartedAt(),
-            entity.getResolvedAt(),
-            entity.getClosedAt()
+            entity.getCreatedAt() != null ? entity.getCreatedAt().toInstant() : null,
+            entity.getQueuedAt() != null ? entity.getQueuedAt().toInstant() : null,
+            entity.getStartedAt() != null ? entity.getStartedAt().toInstant() : null,
+            entity.getResolvedAt() != null ? entity.getResolvedAt().toInstant() : null,
+            entity.getClosedAt() != null ? entity.getClosedAt().toInstant() : null
         );
     }
 
@@ -90,11 +91,11 @@ public class PersistenceMapper {
         entity.setChannel(domain.getChannel());
         entity.setSubject(domain.getSubject());
         entity.setStatus(domain.getStatus().name());
-        entity.setCreatedAt(domain.getCreatedAt());
-        entity.setQueuedAt(domain.getQueuedAt());
-        entity.setStartedAt(domain.getStartedAt());
-        entity.setResolvedAt(domain.getResolvedAt());
-        entity.setClosedAt(domain.getClosedAt());
+        entity.setCreatedAt(domain.getCreatedAt() != null ? domain.getCreatedAt().atOffset(ZoneOffset.UTC) : null);
+        entity.setQueuedAt(domain.getQueuedAt() != null ? domain.getQueuedAt().atOffset(ZoneOffset.UTC) : null);
+        entity.setStartedAt(domain.getStartedAt() != null ? domain.getStartedAt().atOffset(ZoneOffset.UTC) : null);
+        entity.setResolvedAt(domain.getResolvedAt() != null ? domain.getResolvedAt().atOffset(ZoneOffset.UTC) : null);
+        entity.setClosedAt(domain.getClosedAt() != null ? domain.getClosedAt().atOffset(ZoneOffset.UTC) : null);
         return entity;
     }
 
@@ -104,7 +105,7 @@ public class PersistenceMapper {
             entity.getId(),
             entity.getChatId(),
             entity.getTeamId(),
-            entity.getEnteredAt()
+            entity.getEnteredAt() != null ? entity.getEnteredAt().toInstant() : null
         );
     }
 
@@ -114,7 +115,7 @@ public class PersistenceMapper {
         entity.setId(domain.getId());
         entity.setChatId(domain.getChatId());
         entity.setTeamId(domain.getTeamId());
-        entity.setEnteredAt(domain.getEnteredAt());
+        entity.setEnteredAt(domain.getEnteredAt() != null ? domain.getEnteredAt().atOffset(ZoneOffset.UTC) : null);
         return entity;
     }
 }

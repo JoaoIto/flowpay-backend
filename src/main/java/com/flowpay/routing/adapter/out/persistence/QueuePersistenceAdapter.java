@@ -26,14 +26,18 @@ public class QueuePersistenceAdapter implements QueueRepositoryPort {
         return mapper.toDomain(repository.save(mapper.toEntity(queueEntry)));
     }
 
-    @Override
     public Optional<QueueEntry> findById(UUID id) {
         return repository.findById(id).map(mapper::toDomain);
     }
 
     @Override
-    public void deleteByChatId(UUID chatId) {
+    public void removeByChatId(UUID chatId) {
         repository.deleteByChatId(chatId);
+    }
+
+    @Override
+    public void remove(UUID queueEntryId) {
+        repository.deleteById(queueEntryId);
     }
 
     @Override
@@ -42,6 +46,10 @@ public class QueuePersistenceAdapter implements QueueRepositoryPort {
     }
 
     @Override
+    public List<QueueEntry> findByTeamId(UUID teamId) {
+        return repository.findByTeamIdOrderByEnteredAtAsc(teamId).stream().map(mapper::toDomain).collect(Collectors.toList());
+    }
+
     public List<QueueEntry> findByTeamIdOrderByEnteredAtAsc(UUID teamId) {
         return repository.findByTeamIdOrderByEnteredAtAsc(teamId).stream().map(mapper::toDomain).collect(Collectors.toList());
     }

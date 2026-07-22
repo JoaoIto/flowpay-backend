@@ -1,7 +1,7 @@
 package com.flowpay.routing.adapter.in.web;
 
 import com.flowpay.routing.application.port.in.DashboardQueryUseCase;
-import com.flowpay.routing.domain.model.DashboardSnapshot;
+import com.flowpay.routing.application.dto.query.DashboardSnapshot;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;

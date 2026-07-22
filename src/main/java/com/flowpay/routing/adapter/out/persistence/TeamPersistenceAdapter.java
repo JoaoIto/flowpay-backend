@@ -4,6 +4,7 @@ import com.flowpay.routing.adapter.out.persistence.mapper.PersistenceMapper;
 import com.flowpay.routing.adapter.out.persistence.repository.SpringTeamRepository;
 import com.flowpay.routing.application.port.out.TeamRepositoryPort;
 import com.flowpay.routing.domain.model.Team;
+import com.flowpay.routing.domain.model.TeamType;
 import org.springframework.stereotype.Component;
 
 import java.util.Optional;
@@ -30,12 +31,17 @@ public class TeamPersistenceAdapter implements TeamRepositoryPort {
     }
 
     @Override
-    public Optional<Team> findByType(String type) {
-        return repository.findByType(type).map(mapper::toDomain);
+    public Optional<Team> findByType(TeamType type) {
+        return repository.findByType(type.name()).map(mapper::toDomain);
     }
 
     @Override
-    public boolean existsByType(String type) {
-        return repository.existsByType(type);
+    public boolean existsByType(TeamType type) {
+        return repository.existsByType(type.name());
+    }
+
+    @Override
+    public java.util.List<Team> findAll() {
+        return repository.findAll().stream().map(mapper::toDomain).collect(java.util.stream.Collectors.toList());
     }
 }

@@ -3,8 +3,8 @@ package com.flowpay.routing.adapter.in.web;
 import com.flowpay.routing.adapter.in.web.dto.CreateAgentRequest;
 import com.flowpay.routing.adapter.in.web.dto.UpdateAgentStatusRequest;
 import com.flowpay.routing.application.port.in.ManageAgentUseCase;
-import com.flowpay.routing.application.port.in.command.CreateAgentCommand;
-import com.flowpay.routing.application.port.in.command.UpdateAgentStatusCommand;
+import com.flowpay.routing.application.dto.command.CreateAgentCommand;
+import com.flowpay.routing.application.dto.command.UpdateAgentStatusCommand;
 import com.flowpay.routing.domain.model.Agent;
 import com.flowpay.routing.domain.model.AgentStatus;
 import org.springframework.http.HttpStatus;
@@ -38,11 +38,11 @@ public class AgentController {
 
     @GetMapping
     public List<Agent> getAllAgents() {
-        return manageAgentUseCase.getAllAgents();
+        return manageAgentUseCase.findAllAgents();
     }
 
     @GetMapping("/team/{teamId}")
     public List<Agent> getAgentsByTeam(@PathVariable UUID teamId) {
-        return manageAgentUseCase.getAgentsByTeam(teamId);
+        return manageAgentUseCase.findAgentsByTeamId(teamId);
     }
 }
