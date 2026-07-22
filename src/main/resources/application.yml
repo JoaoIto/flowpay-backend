@@ -1,21 +1,33 @@
 spring:
   application:
     name: flowpay-routing
+
+  datasource:
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/flowpay}
+    username: ${DB_USERNAME:flowpay_user}
+    password: ${DB_PASSWORD:flowpay_pass}
+    driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: validate
-    open-in-view: false
+    show-sql: true
     properties:
       hibernate:
+        format_sql: true
         dialect: org.hibernate.dialect.PostgreSQLDialect
+
   flyway:
     enabled: true
-    locations: classpath:db/migration
+    url: ${DB_URL:jdbc:postgresql://localhost:5432/flowpay}
+    user: ${DB_USERNAME:flowpay_user}
+    password: ${DB_PASSWORD:flowpay_pass}
+    baseline-on-migrate: true
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
 
 server:
   port: 8080
-
-meta:
-  whatsapp:
-    verify-token: ${META_WHATSAPP_VERIFY_TOKEN:default-verify-token}
-    app-secret: ${META_WHATSAPP_APP_SECRET:default-app-secret}
