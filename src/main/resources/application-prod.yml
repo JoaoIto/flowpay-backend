@@ -1,0 +1,27 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://${RDS_ENDPOINT:localhost}:5432/flowpay
+    username: ${RDS_USERNAME:flowpay}
+    password: ${RDS_PASSWORD:secret}
+    hikari:
+      maximum-pool-size: 5
+      minimum-idle: 2
+      connection-timeout: 20000
+  jpa:
+    show-sql: false
+    hibernate:
+      ddl-auto: validate
+
+redisson:
+  # MVP: Redis local no EC2 via Docker
+  # Produção: redis://${ELASTICACHE_ENDPOINT}:6379
+  address: redis://localhost:6379
+
+meta:
+  whatsapp:
+    verify-token: ${META_VERIFY_TOKEN}
+    app-secret: ${META_APP_SECRET}
+
+logging:
+  level:
+    com.flowpay: INFO

@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5432/flowpay
+    username: flowpay_dev
+    password: flowpay_secret
+  jpa:
+    show-sql: true
+    hibernate:
+      ddl-auto: validate
+
+redisson:
+  address: redis://localhost:6379
+
+meta:
+  whatsapp:
+    verify-token: flowpay-dev-verify-token
+    app-secret: flowpay-dev-app-secret
+
+logging:
+  level:
+    com.flowpay: DEBUG
+    org.hibernate.SQL: DEBUG
