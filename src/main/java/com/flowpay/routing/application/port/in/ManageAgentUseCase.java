@@ -9,7 +9,9 @@ import java.util.UUID;
 
 public interface ManageAgentUseCase {
     Agent createAgent(CreateAgentCommand command);
+    Agent updateAgent(com.flowpay.routing.application.dto.command.UpdateAgentCommand command);
     Agent updateAgentStatus(UpdateAgentStatusCommand command);
+    void deleteAgent(UUID agentId);
     Optional<Agent> findAgentById(UUID agentId);
     List<Agent> findAgentsByTeamId(UUID teamId);
     List<Agent> findAllAgents();

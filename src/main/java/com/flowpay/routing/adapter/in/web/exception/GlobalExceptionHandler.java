@@ -31,8 +31,14 @@ public class GlobalExceptionHandler {
         return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, e.getMessage());
     }
 
+    @ExceptionHandler(org.springframework.dao.DataIntegrityViolationException.class)
+    public ProblemDetail handleDataIntegrityViolationException(org.springframework.dao.DataIntegrityViolationException e) {
+        // Tratar mensagem amigável para exclusão com FK constraint
+        return ProblemDetail.forStatusAndDetail(HttpStatus.CONFLICT, "Não é possível excluir este registro pois existem dependências vinculadas a ele.");
+    }
+
     @ExceptionHandler(Exception.class)
     public ProblemDetail handleGenericException(Exception e) {
-        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "An unexpected error occurred");
+        return ProblemDetail.forStatusAndDetail(HttpStatus.INTERNAL_SERVER_ERROR, "Ocorreu um erro interno: " + e.getMessage());
     }
 }

@@ -11,6 +11,7 @@ public interface AgentRepositoryPort {
     Optional<Agent> findById(UUID id);
     List<Agent> findByTeamId(UUID teamId);
     List<Agent> findAll();
+    void delete(UUID id);
     Optional<Agent> findAvailableAgentWithLock(UUID teamId);
     List<Agent> findAllByStatus(AgentStatus status);
     long countByTeamIdAndStatus(UUID teamId, AgentStatus status);

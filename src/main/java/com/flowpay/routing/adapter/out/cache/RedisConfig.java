@@ -8,10 +8,4 @@ import org.springframework.context.annotation.Configuration;
 @Configuration
 public class RedisConfig {
     
-    @Bean
-    public ObjectMapper objectMapper() {
-        ObjectMapper mapper = new ObjectMapper();
-        mapper.registerModule(new JavaTimeModule());
-        return mapper;
-    }
 }

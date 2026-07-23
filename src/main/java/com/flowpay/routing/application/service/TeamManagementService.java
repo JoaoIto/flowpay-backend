@@ -1,7 +1,7 @@
 package com.flowpay.routing.application.service;
 
 import com.flowpay.routing.application.dto.command.CreateTeamCommand;
-import com.flowpay.routing.application.port.in.CreateTeamUseCase;
+import com.flowpay.routing.application.port.in.ManageTeamUseCase;
 import com.flowpay.routing.application.port.out.TeamRepositoryPort;
 import com.flowpay.routing.domain.model.Team;
 import org.springframework.stereotype.Service;
@@ -13,7 +13,7 @@ import java.util.Optional;
 import java.util.UUID;
 
 @Service
-public class TeamManagementService implements CreateTeamUseCase {
+public class TeamManagementService implements ManageTeamUseCase {
 
     private final TeamRepositoryPort teamRepository;
 
@@ -31,6 +31,25 @@ public class TeamManagementService implements CreateTeamUseCase {
         Team team = new Team(UUID.randomUUID(), command.name(), command.type(), Instant.now());
         teamRepository.save(team);
         return team;
+    }
+
+    @Override
+    @Transactional
+    public Team updateTeam(com.flowpay.routing.application.dto.command.UpdateTeamCommand command) {
+        Team team = teamRepository.findById(command.id())
+                .orElseThrow(() -> new IllegalArgumentException("Team not found"));
+        Team updated = new Team(team.getId(), command.name(), team.getType(), team.getCreatedAt());
+        teamRepository.save(updated);
+        return updated;
+    }
+
+    @Override
+    @Transactional
+    public void deleteTeam(UUID teamId) {
+        if (teamRepository.findById(teamId).isEmpty()) {
+            throw new IllegalArgumentException("Team not found");
+        }
+        teamRepository.delete(teamId);
     }
 
     @Override

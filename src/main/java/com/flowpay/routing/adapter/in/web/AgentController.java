@@ -36,6 +36,19 @@ public class AgentController {
         manageAgentUseCase.updateAgentStatus(command);
     }
 
+    @PutMapping("/{id}")
+    public Agent updateAgent(@PathVariable UUID id, @RequestBody com.flowpay.routing.adapter.in.web.dto.UpdateAgentRequest request) {
+        int maxChats = request.maxChats() != null ? request.maxChats() : 5;
+        com.flowpay.routing.application.dto.command.UpdateAgentCommand command = new com.flowpay.routing.application.dto.command.UpdateAgentCommand(id, request.name(), maxChats);
+        return manageAgentUseCase.updateAgent(command);
+    }
+
+    @DeleteMapping("/{id}")
+    @ResponseStatus(HttpStatus.NO_CONTENT)
+    public void deleteAgent(@PathVariable UUID id) {
+        manageAgentUseCase.deleteAgent(id);
+    }
+
     @GetMapping
     public List<Agent> getAllAgents() {
         return manageAgentUseCase.findAllAgents();

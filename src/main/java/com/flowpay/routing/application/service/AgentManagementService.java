@@ -45,7 +45,25 @@ public class AgentManagementService implements ManageAgentUseCase {
         agentRepository.save(agent);
         return agent;
     }
+    @Override
+    @Transactional
+    public Agent updateAgent(com.flowpay.routing.application.dto.command.UpdateAgentCommand command) {
+        Agent agent = agentRepository.findById(command.id())
+                .orElseThrow(() -> new IllegalArgumentException("Agent not found: " + command.id()));
+        
+        Agent updated = new Agent(agent.getId(), agent.getTeamId(), command.name(), command.maxChats(), agent.getActiveChatsCount(), agent.getStatus(), agent.getCreatedAt());
+        agentRepository.save(updated);
+        return updated;
+    }
 
+    @Override
+    @Transactional
+    public void deleteAgent(UUID agentId) {
+        if (agentRepository.findById(agentId).isEmpty()) {
+            throw new IllegalArgumentException("Agent not found: " + agentId);
+        }
+        agentRepository.delete(agentId);
+    }
     @Override
     @Transactional
     public Agent updateAgentStatus(UpdateAgentStatusCommand command) {

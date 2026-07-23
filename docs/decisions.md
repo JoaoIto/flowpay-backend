@@ -46,3 +46,10 @@ Este documento registra as decisões de arquitetura e tecnologia tomadas no Flow
 **Consequências:**
 - (+) $0 de custo na prova de conceito.
 - (+) Pelo container do Redis estar na EC2, economiza-se a contratação de um ElastiCache (que não tem free tier vitalício na AWS).
+
+## ADR 7: Tratamento Global de Exceções (@ControllerAdvice)
+**Contexto:** A UI requer validações em requisições de criação, edição e exclusão (ex: Restrição de Deleção por Chave Estrangeira - Time com Agentes).
+**Decisão:** Centralizar os retornos em um `GlobalExceptionHandler` interceptando `DataIntegrityViolationException`, `MethodArgumentNotValidException`, etc.
+**Consequências:**
+- (+) A interface do usuário pode captar essas informações diretamente na store de logs (`logsStore`) ou Toast.
+- (+) Redução de verificações duplicadas de chaves ativas (ex: "Existem agentes neste time?") nos Use Cases de Domínio, uma vez que o próprio Banco (FK) bloqueia e repassa a exceção.

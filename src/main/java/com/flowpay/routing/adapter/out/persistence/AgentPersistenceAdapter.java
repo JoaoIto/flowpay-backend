@@ -53,6 +53,11 @@ public class AgentPersistenceAdapter implements AgentRepositoryPort {
     }
 
     @Override
+    public void delete(UUID id) {
+        repository.deleteById(id);
+    }
+
+    @Override
     public Optional<Agent> findAvailableAgentWithLock(UUID teamId) {
         return repository.findAvailableAgentWithLock(teamId).map(mapper::toDomain);
     }

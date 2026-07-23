@@ -12,4 +12,5 @@ public interface TeamRepositoryPort {
     Optional<Team> findByType(TeamType type);
     List<Team> findAll();
     boolean existsByType(TeamType type);
+    void delete(UUID id);
 }
