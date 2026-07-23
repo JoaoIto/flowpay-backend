@@ -1,7 +1,10 @@
 package com.flowpay.routing.adapter.in.web;
 
 import com.flowpay.routing.application.port.in.CloseChatUseCase;
+import com.flowpay.routing.application.port.in.RouteChatUseCase;
+import com.flowpay.routing.application.dto.command.RouteChatCommand;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 import java.util.UUID;
 
@@ -10,9 +13,17 @@ import java.util.UUID;
 public class ChatController {
 
     private final CloseChatUseCase closeChatUseCase;
+    private final RouteChatUseCase routeChatUseCase;
 
-    public ChatController(CloseChatUseCase closeChatUseCase) {
+    public ChatController(CloseChatUseCase closeChatUseCase, RouteChatUseCase routeChatUseCase) {
         this.closeChatUseCase = closeChatUseCase;
+        this.routeChatUseCase = routeChatUseCase;
+    }
+
+    @PostMapping
+    public ResponseEntity<Void> simulateChat(@RequestBody RouteChatCommand command) {
+        routeChatUseCase.routeChat(command);
+        return ResponseEntity.ok().build();
     }
 
     @PostMapping("/{id}/resolve")
