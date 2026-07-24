@@ -4,6 +4,8 @@
 
 O **FlowPay** é um simulador de SaaS conversacional projetado para instituições financeiras. Seu núcleo é um motor de roteamento de alta performance capaz de capturar mensagens (via Webhooks do WhatsApp/Meta), enfileirá-las e distribuí-las de forma justa entre atendentes disponíveis, respeitando rígidos limites de capacidade e SLAs.
 
+<img src="public\swagger.png"/>
+
 ---
 
 ## 📌 Sumário Rápido
