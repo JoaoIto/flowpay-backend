@@ -3,7 +3,7 @@ spring:
     name: flowpay-routing
 
   datasource:
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/flowpay}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/flowpay}
     username: ${DB_USERNAME:flowpay_user}
     password: ${DB_PASSWORD:flowpay_pass}
     driver-class-name: org.postgresql.Driver
@@ -19,7 +19,7 @@ spring:
 
   flyway:
     enabled: true
-    url: ${DB_URL:jdbc:postgresql://localhost:5432/flowpay}
+    url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/flowpay}
     user: ${DB_USERNAME:flowpay_user}
     password: ${DB_PASSWORD:flowpay_pass}
     baseline-on-migrate: true

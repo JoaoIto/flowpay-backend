@@ -49,3 +49,5 @@ buildNumber.properties
 
 # Local application properties
 application-local.yml
+
+.env
