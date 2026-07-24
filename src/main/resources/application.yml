@@ -4,7 +4,7 @@ spring:
 
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/flowpay}
-    username: ${DB_USERNAME:flowpay_user}
+    username: ${DATABASE_USERNAME:${DB_USERNAME:flowpay_user}}
     password: ${DATABASE_PASS:${DB_PASSWORD:flowpay_pass}}
     driver-class-name: org.postgresql.Driver
 
@@ -20,7 +20,7 @@ spring:
   flyway:
     enabled: true
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/flowpay}
-    user: ${DB_USERNAME:flowpay_user}
+    user: ${DATABASE_USERNAME:${DB_USERNAME:flowpay_user}}
     password: ${DATABASE_PASS:${DB_PASSWORD:flowpay_pass}}
     baseline-on-migrate: true
 
