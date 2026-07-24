@@ -5,7 +5,7 @@ spring:
   datasource:
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/flowpay}
     username: ${DB_USERNAME:flowpay_user}
-    password: ${DB_PASSWORD:flowpay_pass}
+    password: ${DATABASE_PASS:${DB_PASSWORD:flowpay_pass}}
     driver-class-name: org.postgresql.Driver
 
   jpa:
@@ -21,13 +21,15 @@ spring:
     enabled: true
     url: ${DATABASE_URL:jdbc:postgresql://localhost:5432/flowpay}
     user: ${DB_USERNAME:flowpay_user}
-    password: ${DB_PASSWORD:flowpay_pass}
+    password: ${DATABASE_PASS:${DB_PASSWORD:flowpay_pass}}
     baseline-on-migrate: true
 
   data:
     redis:
+      url: ${REDIS_URL:}
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
+      password: ${REDIS_TOKEN:${REDIS_PASSWORD:}}
 
 server:
   port: 8080
