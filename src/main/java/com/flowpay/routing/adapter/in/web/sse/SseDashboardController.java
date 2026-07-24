@@ -10,15 +10,26 @@ import org.springframework.web.servlet.mvc.method.annotation.SseEmitter;
 public class SseDashboardController {
 
     private final RedisMessageSubscriber redisMessageSubscriber;
+    private final com.flowpay.routing.application.port.in.DashboardQueryUseCase dashboardQueryUseCase;
 
-    public SseDashboardController(RedisMessageSubscriber redisMessageSubscriber) {
+    public SseDashboardController(RedisMessageSubscriber redisMessageSubscriber,
+                                  com.flowpay.routing.application.port.in.DashboardQueryUseCase dashboardQueryUseCase) {
         this.redisMessageSubscriber = redisMessageSubscriber;
+        this.dashboardQueryUseCase = dashboardQueryUseCase;
     }
 
     @GetMapping
     public SseEmitter streamDashboard() {
         SseEmitter emitter = new SseEmitter(3600000L); // 1 hour timeout
         redisMessageSubscriber.addEmitter(emitter);
+        
+        // Send initial payload immediately
+        try {
+            emitter.send(dashboardQueryUseCase.getDashboardSnapshot());
+        } catch (Exception e) {
+            emitter.completeWithError(e);
+        }
+        
         return emitter;
     }
 }
