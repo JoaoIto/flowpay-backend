@@ -19,6 +19,8 @@ import java.time.Instant;
 import java.util.Optional;
 import java.util.UUID;
 
+import com.flowpay.routing.domain.service.AIService;
+
 @Service
 public class RoutingEngineService implements RouteChatUseCase {
 
@@ -28,28 +30,51 @@ public class RoutingEngineService implements RouteChatUseCase {
     private final QueueRepositoryPort queueRepository;
     private final DistributedLockPort distributedLock;
     private final EventPublisherPort eventPublisher;
+    private final AIService aiService;
 
     public RoutingEngineService(TeamRepositoryPort teamRepository,
                                 AgentRepositoryPort agentRepository,
                                 ChatSessionRepositoryPort chatRepository,
                                 QueueRepositoryPort queueRepository,
                                 DistributedLockPort distributedLock,
-                                EventPublisherPort eventPublisher) {
+                                EventPublisherPort eventPublisher,
+                                AIService aiService) {
         this.teamRepository = teamRepository;
         this.agentRepository = agentRepository;
         this.chatRepository = chatRepository;
         this.queueRepository = queueRepository;
         this.distributedLock = distributedLock;
         this.eventPublisher = eventPublisher;
+        this.aiService = aiService;
     }
 
     @Override
     @Transactional
     public ChatSession routeChat(RouteChatCommand command) {
-        Team team = teamRepository.findByType(command.teamType())
-                .orElseThrow(() -> new IllegalArgumentException("Team not found for type: " + command.teamType()));
+        String finalTeamTypeStr = command.teamType().name();
+        
+        AIService.AIClassification classification = aiService.classifyMessage(command.subject());
+        if (classification != null) {
+            finalTeamTypeStr = classification.team();
+        }
 
-        ChatSession chat = new ChatSession(UUID.randomUUID(), team.getId(), command.customerId(), command.channel(), command.subject(), Instant.now());
+        com.flowpay.routing.domain.model.TeamType finalTeamType;
+        try {
+            finalTeamType = com.flowpay.routing.domain.model.TeamType.valueOf(finalTeamTypeStr);
+        } catch (IllegalArgumentException e) {
+            finalTeamType = com.flowpay.routing.domain.model.TeamType.OUTROS_ASSUNTOS;
+        }
+
+        Team team = teamRepository.findByType(finalTeamType)
+                .orElseGet(() -> teamRepository.findByType(com.flowpay.routing.domain.model.TeamType.OUTROS_ASSUNTOS)
+                        .orElseThrow(() -> new IllegalArgumentException("Fallback Team not found for type: OUTROS_ASSUNTOS")));
+
+        String finalSubject = command.subject();
+        if (classification != null && "ANGRY".equalsIgnoreCase(classification.sentiment())) {
+            finalSubject = "🔴 URGENTE: " + finalSubject;
+        }
+
+        ChatSession chat = new ChatSession(UUID.randomUUID(), team.getId(), command.customerId(), command.channel(), finalSubject, Instant.now());
         chat.enqueue(Instant.now());
         
         chatRepository.save(chat);

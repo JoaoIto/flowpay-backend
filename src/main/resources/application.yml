@@ -28,7 +28,6 @@ spring:
     redis:
       host: ${REDIS_HOST:localhost}
       port: ${REDIS_PORT:6379}
-      password: ${REDIS_TOKEN:${REDIS_PASSWORD:}}
 
 server:
   port: 8080
