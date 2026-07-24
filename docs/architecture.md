@@ -31,6 +31,7 @@ graph TD
             RepoPort[Repository Ports]
             LockPort[DistributedLock Port]
             EventPort[EventPublisher Port]
+            AIPort[AIService Port]
         end
     end
 
@@ -38,6 +39,7 @@ graph TD
         DB[(PostgreSQL - JPA)]
         Cache[(Redis - Redisson)]
         PubSub[[Redis Pub/Sub]]
+        LLM[Gemini API]
     end
 
     Web --> RouteChat
@@ -49,11 +51,13 @@ graph TD
     RouteChat --> RepoPort
     RouteChat --> LockPort
     RouteChat --> EventPort
+    RouteChat --> AIPort
     
     RepoPort --> DB
     LockPort --> Cache
     EventPort --> PubSub
     PubSub --> SSE
+    AIPort --> LLM
 ```
 
 ### Regras de Isolamento:
@@ -91,10 +95,16 @@ sequenceDiagram
 
 Esta arquitetura minimiza o uso de conexões de banco de dados e aproveita o Redis como um *Event Bus* de altíssima performance.
 
-## 4. Gerenciamento de Exceções Globais (Error Handling)
+## 4. Roteamento Inteligente e Copilot (Integração IA Gemini)
+
+O motor conta com uma integração direta com a API do Google Gemini via `AIService` port:
+1. **Roteamento Inteligente**: Quando uma mensagem chega pelo webhook sem um `teamId` explícito, a IA analisa o contexto da mensagem e sugere automaticamente a fila (Suporte, Vendas, etc) mais apropriada. Há um fallback seguro para humano se a IA falhar.
+2. **Copilot do Agente**: Na UI, o agente dispõe de um gerador de sugestões de resposta baseado no contexto da conversa. Isso otimiza o Tempo Médio de Espera (TME).
+
+## 5. Gerenciamento de Exceções Globais (Error Handling)
 
 Todas as requisições CRUD (Times, Agentes, Webhooks) contam com um tratamento unificado de erros através do `@ControllerAdvice` (`GlobalExceptionHandler`). 
 Erros de integridade de dados (ex: `DataIntegrityViolationException` ao tentar deletar um time com agentes) ou exceções de negócio customizadas são convertidos em mensagens JSON padronizadas para consumo direto do Frontend, melhorando a rastreabilidade e evitando retornos "500 Internal Server Error" brutos.
 
-## 5. Prontidão para Deploy
-- **CORS Configuration**: Configurado explicitamente no `WebConfig` para aceitar a URL de produção na Vercel (`https://flowpay-frontend-five.vercel.app`) bem como o `localhost`, preparando a API para receber tráfego autenticado de forma segura.
+## 6. Prontidão para Deploy
+- **CORS Configuration**: Configurado explicitamente no `WebConfig` para aceitar a URL de produção na Vercel e Render, preparando a API para receber tráfego autenticado de forma segura.

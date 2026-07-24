@@ -53,3 +53,11 @@ Este documento registra as decisões de arquitetura e tecnologia tomadas no Flow
 **Consequências:**
 - (+) A interface do usuário pode captar essas informações diretamente na store de logs (`logsStore`) ou Toast.
 - (+) Redução de verificações duplicadas de chaves ativas (ex: "Existem agentes neste time?") nos Use Cases de Domínio, uma vez que o próprio Banco (FK) bloqueia e repassa a exceção.
+
+## ADR 8: Integração de Inteligência Artificial (Google Gemini)
+**Contexto:** Para reduzir o Tempo Médio de Espera (TME) e facilitar o roteamento de chats sem intervenção humana no nível 0.
+**Decisão:** Utilizar a API do Google Gemini via RestTemplate (Spring) implementada na porta `AIService`.
+**Consequências:**
+- (+) Capacidade de rotear chats com base em linguagem natural (NLP).
+- (+) Geração de respostas sugeridas (Copilot) para os agentes.
+- (-) Dependência de latência de rede externa para a API do Gemini. Para mitigar, foi estabelecido um timeout resiliente e fallback humano caso a API falhe ou demore muito para responder.

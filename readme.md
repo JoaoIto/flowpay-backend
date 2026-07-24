@@ -6,6 +6,18 @@ O **FlowPay** é um simulador de SaaS conversacional projetado para instituiçõ
 
 ---
 
+## 📌 Sumário Rápido
+- **[📖 Swagger (API Docs Online)](https://flowpay-backend-1s3f.onrender.com/swagger-ui/index.html)**
+- **[🔗 Interface Frontend (Deploy)](#)** `[Em breve/Vercel]`
+- **[🚀 Como Executar Localmente](#-como-executar-localmente)**
+- **[📐 Arquitetura & IA (Gemini)](docs/architecture.md)**
+- **[🧠 Decisões de Design (ADRs)](docs/decisions.md)**
+- **[🗺️ Plano de Implementação Completo](docs/implementation-plan.md)**
+- **[🚀 Plano do Desafio & Setup](docs/plano-FlowPay-java-springboot-react.md)**
+- **[🔍 Pesquisa & Entendimento do Domínio](docs/research.md)**
+
+---
+
 ## 🏗️ Arquitetura e Padrões de Projeto
 
 O projeto foi inteiramente desenhado utilizando **Hexagonal Architecture (Ports and Adapters)**. O domínio do negócio é o coração do sistema, totalmente isolado de frameworks e tecnologias externas.
@@ -71,3 +83,4 @@ Você precisará do **Docker** e do **Maven** instalados. O banco de dados e o c
     *A aplicação rodará na porta `8080`.*
     *O Flyway rodará as migrations automaticamente no *startup*.*
 3. **Acesse o Endpoints Base:** `http://localhost:8080/api/v1/dashboard`
+
