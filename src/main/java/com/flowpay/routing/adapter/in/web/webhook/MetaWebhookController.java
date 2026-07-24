@@ -7,9 +7,12 @@ import com.flowpay.routing.domain.model.TeamType;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+import io.swagger.v3.oas.annotations.tags.Tag;
+import io.swagger.v3.oas.annotations.Operation;
 
 @RestController
 @RequestMapping("/api/v1/webhooks/meta")
+@Tag(name = "Webhook - WhatsApp", description = "Endpoints para recebimento de mensagens do WhatsApp via Meta Cloud API")
 public class MetaWebhookController {
 
     private static final String VERIFY_TOKEN = "ubots_flowpay_secret_123";
@@ -21,6 +24,7 @@ public class MetaWebhookController {
     }
 
     @GetMapping
+    @Operation(summary = "Verificação de Webhook", description = "Usado pela Meta para confirmar a URL do webhook através de um challenge.")
     public ResponseEntity<String> verify(
             @RequestParam("hub.mode") String mode,
             @RequestParam("hub.verify_token") String token,
@@ -34,6 +38,7 @@ public class MetaWebhookController {
     }
 
     @PostMapping
+    @Operation(summary = "Receber Mensagem do WhatsApp", description = "Ponto de entrada principal do motor FlowPay. Ao enviar o payload, a mensagem entrará na fila e o dashboard será atualizado via SSE instantaneamente.")
     public ResponseEntity<Void> receiveWebhook(@RequestBody MetaWebhookPayload payload) {
         if (payload.entry() != null) {
             for (MetaWebhookPayload.Entry entry : payload.entry()) {

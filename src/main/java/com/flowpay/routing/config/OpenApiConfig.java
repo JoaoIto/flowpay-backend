@@ -13,8 +13,8 @@ public class OpenApiConfig {
     public OpenAPI flowpayOpenAPI() {
         return new OpenAPI()
                 .info(new Info().title("FlowPay Routing API")
-                        .description("API para o motor de roteamento omnichannel de conversas financeiras. Suporta conexões em tempo real (SSE) para o painel de monitoramento e endpoints para integração com provedores de mensageria.")
+                        .description("API robusta para o motor de roteamento omnichannel de conversas financeiras (FlowPay). Oferece endpoints para Gestão de Agentes, Equipes, Integração via Webhooks (WhatsApp/Meta), Roteamento com IA (Gemini) e Monitoramento em Tempo Real via Server-Sent Events (SSE).")
                         .version("v0.1.0")
-                        .contact(new Contact().name("FlowPay Engineering").email("dev@flowpay.com")));
+                        .contact(new Contact().name("João Victor PFR").email("joaovictorpfr@gmail.com")));
     }
 }
